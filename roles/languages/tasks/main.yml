@@ -1,0 +1,33 @@
+---
+- name: Install Rustup
+  ansible.builtin.shell:
+    cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+  args:
+    creates: "{{ ansible_user_dir }}/.cargo/bin/rustup"
+
+- name: Add Rust to .local_paths
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_user_dir }}/.local_paths"
+    line: 'source "$HOME/.cargo/env"'
+    create: true
+
+- name: Install Python packages
+  ansible.builtin.apt:
+    name:
+      - python3
+      - python3-pip
+      - python3-venv
+    state: present
+  become: true
+
+- name: Install uv
+  ansible.builtin.command:
+    cmd: curl -LsSf https://astral.sh/uv/install.sh | sh
+    creates: "{{ ansible_user_dir }}/.local/bin/uv"
+  register: uv_install
+
+- name: Add uv to PATH
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_user_dir }}/.local_paths"
+    line: 'export PATH="$HOME/.local/bin:$PATH"'
+    create: true

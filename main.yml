@@ -1,0 +1,8 @@
+---
+- name: Dotfiles Config
+  hosts: localhost
+  connection: local
+  roles:
+    - networking
+    - languages
+    - terminal

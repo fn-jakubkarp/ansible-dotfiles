@@ -1,0 +1,24 @@
+home: "{{ ansible_env.HOME }}/.config"
+
+zsh_dir: "{{ home }}/zsh"
+zsh_file: "{{ zsh_dir }}/.zshrc"
+tmux_dir: "{{ home }}/tmux"
+tmux_file: "{{ tmux_dir }}/tmux.conf"
+
+
+
+default_roles:
+- networking
+- languages
+- terminal
+
+
+go:
+  packages:
+    - package: github.com/go-task/task/v3/cmd/task@latest
+      cmd: task
+    - package: github.com/joshmedeski/sesh/v2@latest
+      cmd: sesh
+    - package: golang.org/x/tools/gopls@latest
+      cmd: gopls
+

@@ -1,0 +1,63 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    become: yes
+
+- name: Install core networking packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - wget
+      - git
+      - gnupg
+      - ca-certificates
+    state: present
+    become: yes
+
+- name: Install net-tools
+  ansible.builtin.apt:
+    name:
+      - net-tools
+    state: present
+    become: yes
+
+- name: Install iputils-ping
+  ansible.builtin.apt:
+    name:
+      - iputils-ping
+    state: present
+    become: yes
+
+- name: Install SSH
+  ansible.builtin.apt:
+    name:
+      - openssh-client
+      - openssh-server
+    state: present
+    become: yes
+
+- name: Install iproute2
+  ansible.builtin.apt:
+    name:
+      - iproute2
+    state: present
+    become: yes
+
+- name: Install dnsutils
+  ansible.builtin.apt:
+    name:
+      - dnsutils
+    state: present
+    become: yes
+
+- name: Install network debugging tools
+  ansible.builtin.apt:
+    name:
+      - tcpdump
+      - nmap
+      - traceroute
+      - mtr
+    state: present
+    become: yes
