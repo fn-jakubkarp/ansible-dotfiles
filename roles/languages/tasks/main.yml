@@ -21,7 +21,7 @@
   become: true
 
 - name: Install uv
-  ansible.builtin.command:
+  ansible.builtin.shell:
     cmd: curl -LsSf https://astral.sh/uv/install.sh | sh
     creates: "{{ ansible_user_dir }}/.local/bin/uv"
   register: uv_install
