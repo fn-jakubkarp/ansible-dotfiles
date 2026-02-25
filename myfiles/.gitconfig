@@ -1,0 +1,36 @@
+[user]
+	name = {{ user.name }}
+	email = {{ user.email }}
+	username = {{ user.username }}
+[init]
+	defaultBranch = main
+[color]
+	ui = auto
+[color "branch"]
+	current = yellow bold
+	local = green bold
+	remote = cyan bold
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[color "status"]
+	added = green bold
+	changed = yellow bold
+	untracked = red bold
+
+[github]
+	user = {{ user.username }}
+	token = token
+[gitflow "prefix"]
+	versiontag = v
+[sequence]
+	editor = interactive-rebase-tool
+[core]
+	editor = code --wait
+[push]
+	default = current
+[pull]
+	prune = true

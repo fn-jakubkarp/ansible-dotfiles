@@ -1,36 +1,40 @@
-- name: "OHMYZSH | Check if Oh My Zsh is installed"
-  ansible.builtin.stat:
-    path: "{{ ansible_env.HOME }}/.oh-my-zsh"
-  register: omz_installed
+- name: Install ZSH
+  ansible.builtin.apt:
+    name: zsh
+    state: present
+    update_cache: yes
+  become: true
 
-- name: "OHMYZSH | Install Oh My Zsh"
-  shell: |
+- name: Install Oh My Zsh
+  ansible.builtin.shell: >
+    env KEEP_ZSHRC=yes RUNZSH=no CHSH=no UNATTENDED=1
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   args:
     creates: "{{ ansible_env.HOME }}/.oh-my-zsh"
-  when: not omz_installed.stat.exists
 
-- name: "ZSH | Check if Starship is already installed"
+- name: Check if Starship is already installed
   ansible.builtin.command: "which starship"
   register: starship_check
   changed_when: false
   failed_when: false
   check_mode: false
 
-- name: "ZSH | Download Starship install script"
+- name: Download Starship install script
   ansible.builtin.get_url:
     url: https://starship.rs/install.sh
     dest: /tmp/starship_install.sh
     mode: '0755'
   when: starship_check.rc != 0
 
-- name: "ZSH | Install Starship"
+- name: "Install Starship"
   ansible.builtin.command: "/tmp/starship_install.sh -y"
   become: true
   when: starship_check.rc != 0
 
-- name: "ZSH | Remove Starship install script"
+- name: Remove Starship install script
   ansible.builtin.file:
     path: /tmp/starship_install.sh
     state: absent
   when: starship_check.rc != 0
+
+- name: Install zoxide

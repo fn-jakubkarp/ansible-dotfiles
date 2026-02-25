@@ -1,18 +1,18 @@
 home: "{{ ansible_env.HOME }}/.config"
 
-zsh_dir: "{{ home }}/zsh"
-zsh_file: "{{ zsh_dir }}/.zshrc"
-tmux_dir: "{{ home }}/tmux"
-tmux_file: "{{ tmux_dir }}/tmux.conf"
-
-
 
 default_roles:
 - networking
 - languages
 - terminal
 
-
+custom_apt_repositories:
+  - name: eza
+    key_url: "https://raw.githubusercontent.com/eza-community/eza/main/deb.asc"
+    key_dest: "/etc/apt/keyrings/gierens.asc"
+    repo_line: "deb [signed-by=/etc/apt/keyrings/gierens.asc] http://deb.gierens.de stable main"
+    filename: "gierens"
+  
 go:
   packages:
     - package: github.com/go-task/task/v3/cmd/task@latest

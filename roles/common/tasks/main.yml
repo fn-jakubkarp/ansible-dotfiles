@@ -1,0 +1,62 @@
+---
+- name: Ensure GPG catalog is present in filesystem
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Download GPG keys for external repositories
+  ansible.builtin.get_url:
+    url: "{{ item.key_url }}"
+    dest: "{{ item.key_dest }}"
+    mode: '0644'
+  loop: "{{ custom_apt_repositories }}"
+  when: custom_apt_repositories is defined
+  become: true
+
+- name: Add external repositories to system
+  ansible.builtin.apt_repository:
+    repo: "{{ item.repo_line }}"
+    state: present
+    filename: "{{ item.filename }}"
+    update_cache: no
+  loop: "{{ custom_apt_repositories }}"
+  when: custom_apt_repositories is defined
+  become: true
+  register: added_repos
+
+- name: Force apt cache update if new repositories were added
+  ansible.builtin.apt:
+    update_cache: yes
+  become: true
+  when: added_repos.changed
+
+- name: Install core packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - wget
+      - git
+      - gnupg
+      - ca-certificates
+      - net-tools
+      - iputils-ping
+      - iproute2
+      - dnsutils
+      - openssh-client
+      - openssh-server
+      - tcpdump
+      - nmap
+      - traceroute
+      - mtr
+      - jq
+      - gh
+      - ripgrep
+      - eza
+      - htop
+      - tmux
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  become: true

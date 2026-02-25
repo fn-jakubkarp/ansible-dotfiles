@@ -1,42 +1,59 @@
 #!/bin/zsh
 
-# FZF Configuration
-# FZF color theme
+# ──[ General FZF Look & Feel ]──────────────────────────────
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-  --color=fg:#d0d0d0,fg+:#d0d0d0,bg:#121212,bg+:#262626
-  --color=hl:#5f87af,hl+:#5fd7ff,info:#afaf87,marker:#87ff00
-  --color=prompt:#d7005f,spinner:#4d2773,pointer:#ff4848,header:#87afaf
-  --color=border:#262626,label:#aeaeae,query:#d9d9d9
-  --border="rounded" --border-label="lirin" --border-label-pos="0" --preview-window="border-rounded"
-  --padding="0,1" --margin="0,1" --prompt="> " --marker=">"
-  --pointer="◆" --separator="-" --scrollbar="│" --info="right"'
+  --color=fg:#CBE0F0,fg+:#CBE0F0,bg:#011423,bg+:#033259
+  --color=hl:#0FC5ED,hl+:#24EAF7,info:#FFE073,marker:#47FF9C
+  --color=prompt:#E52E2E,spinner:#a277ff,pointer:#47FF9C,header:#44FFB1
+  --color=border:#214969,label:#CBE0F0,query:#CBE0F0
+  --border=rounded --border-label="lirin" --border-label-pos=0
+  --prompt="> " --marker=">" --pointer="◆"
+  --separator="─" --scrollbar="│" --info=right
+  --margin=0,1 --padding=0,1
+  --preview-window="right:60%:wrap:border-rounded"'
 
-# Use fd instead of find for FZF
+# ──[ TMUX Integration ]─────────────────────────────────────
+export FZF_TMUX=1
+export FZF_TMUX_OPTS='-p 80%,60% --border=rounded'
+
+# ──[ Command Backends ]─────────────────────────────────────
+export FZF_DEFAULT_COMMAND="fd -t f --hidden --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type d --hidden --exclude .git"
+
+# ──[ Previews ]─────────────────────────────────────────────
+show_file_or_dir_preview='
+  if [ -d {} ]; then
+    eza --tree --color=always {} | head -200
+  else
+    mime=$(file --mime-type {} | cut -d" " -f2)
+    case "$mime" in
+      image/*) viu -w 40 -h 20 {} ;;
+      video/*) ffmpeg -i {} -hide_banner ;;
+      text/*|application/json|application/xml) bat --style=numbers --color=always {} ;;
+      *) file {} ;;
+    esac
+  fi
+'
+
+export FZF_CTRL_T_OPTS="--preview='$show_file_or_dir_preview'"
+export FZF_ALT_C_OPTS="--preview='eza --tree --color=always {} | head -200'"
+
+# ──[ Completion Hooks ]─────────────────────────────────────
 _fzf_compgen_path() {
-  fdfind --hidden --exclude .git . "$1"
+  fd --type f --hidden --exclude .git . "$1"
 }
 
 _fzf_compgen_dir() {
-  fdfind --type d --hidden --exclude .git . "$1"
+  fd --type d --hidden --exclude .git . "$1"
 }
 
 _fzf_comprun() {
-  local command=$1
-  shift
-
+  local command=$1; shift
   case "$command" in
-    cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
-    export|unset) fzf --preview "eval 'echo \${}'"         "$@" ;;
-    ssh)          fzf --preview 'dig {}'                   "$@" ;;
-    *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+    cd) fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
+    export|unset) fzf --preview "eval 'echo \${}'" "$@" ;;
+    ssh) fzf --preview 'dig {}' "$@" ;;
+    *) fzf --preview "$show_file_or_dir_preview" "$@" ;;
   esac
 }
-
-show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else batcat -n --color=always --line-range :500 {}; fi"
-
-# FZF command configurations
-export FZF_DEFAULT_COMMAND="fdfind --hidden --exclude .git"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fdfind --type d --hidden --exclude .git"
-export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
-export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
