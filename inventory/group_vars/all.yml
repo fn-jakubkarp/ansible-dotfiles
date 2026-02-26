@@ -1,6 +1,11 @@
 home: "{{ ansible_env.HOME }}/.config"
 ansible_python_interpreter: auto_silent
 
+user:
+  name: "Jakub Karp"
+  email: "quni.inne@gmail.com"
+  username: "fn-jakubkarp"
+
 default_roles:
 - networking
 - languages
