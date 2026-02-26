@@ -5,30 +5,31 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ ansible_user_dir }}/.config"
-    - "{{ ansible_user_dir }}/.config/zsh"
-    - "{{ ansible_user_dir }}/.dotfiles"
+    - "{{ ansible_facts['user_dir'] }}/.config"
+    - "{{ ansible_facts['user_dir'] }}/.config/zsh"
+    - "{{ ansible_facts['user_dir'] }}/.dotfiles"
 
 - name: Template gitconfig
   become: false
   ansible.builtin.template:
     src: gitconfig.j2
-    dest: "{{ ansible_user_dir }}/.gitconfig"
+    dest: "{{ ansible_facts['user_dir'] }}/.gitconfig"
     mode: '0644'
 
 - name: Create symlinks for configuration files
   become: false
   ansible.builtin.file:
-    src: "{{ ansible_user_dir }}/.dotfiles/files/{{ item.src }}"
+    src: "{{ ansible_facts['user_dir'] }}/.dotfiles/files/{{ item.src }}"
     dest: "{{ item.dest }}"
     state: link
     force: yes
+    follow: no
   loop:
-    - { src: 'starship.toml', dest: '{{ ansible_user_dir }}/.config/starship.toml' }
-    - { src: 'zshrc', dest: '{{ ansible_user_dir }}/.zshrc' }
-    - { src: 'aliases.zsh', dest: '{{ ansible_user_dir }}/.config/zsh/aliases.zsh' }
-    - { src: 'functions.zsh', dest: '{{ ansible_user_dir }}/.config/zsh/functions.zsh' }
-    - { src: 'fzf.zsh', dest: '{{ ansible_user_dir }}/.config/zsh/fzf.zsh' }
-    - { src: 'git.zsh', dest: '{{ ansible_user_dir }}/.config/zsh/git.zsh' }
-    - { src: 'history.zsh', dest: '{{ ansible_user_dir }}/.config/zsh/history.zsh' }
-    - { src: '.tmux.conf', dest: '{{ ansible_user_dir }}/.tmux.conf' }
+    - { src: 'starship.toml', dest: '{{ ansible_facts["user_dir"] }}/.config/starship.toml' }
+    - { src: 'zshrc', dest: '{{ ansible_facts["user_dir"] }}/.zshrc' }
+    - { src: 'aliases.zsh', dest: '{{ ansible_facts["user_dir"] }}/.config/zsh/aliases.zsh' }
+    - { src: 'functions.zsh', dest: '{{ ansible_facts["user_dir"] }}/.config/zsh/functions.zsh' }
+    - { src: 'fzf.zsh', dest: '{{ ansible_facts["user_dir"] }}/.config/zsh/fzf.zsh' }
+    - { src: 'git.zsh', dest: '{{ ansible_facts["user_dir"] }}/.config/zsh/git.zsh' }
+    - { src: 'history.zsh', dest: '{{ ansible_facts["user_dir"] }}/.config/zsh/history.zsh' }
+    - { src: '.tmux.conf', dest: '{{ ansible_facts["user_dir"] }}/.tmux.conf' }

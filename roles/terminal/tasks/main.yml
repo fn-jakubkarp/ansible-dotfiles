@@ -12,7 +12,7 @@
     env KEEP_ZSHRC=yes RUNZSH=no CHSH=no UNATTENDED=1
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   args:
-    creates: "{{ ansible_env.HOME }}/.oh-my-zsh"
+    creates: "{{ ansible_facts['env']['HOME'] }}/.oh-my-zsh"
 
 - name: Check if Starship is already installed
   ansible.builtin.command: "which starship"
@@ -30,7 +30,6 @@
 
 - name: "Install Starship"
   ansible.builtin.command: "/tmp/starship_install.sh -y"
-  become: true
   when: starship_check.rc != 0
 
 - name: Remove Starship install script
@@ -43,4 +42,4 @@
   become: false
   ansible.builtin.shell: curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
   args:
-    creates: "{{ ansible_env.HOME }}/.local/bin/zoxide"
+    creates: "{{ ansible_facts['env']['HOME'] }}/.local/bin/zoxide"
