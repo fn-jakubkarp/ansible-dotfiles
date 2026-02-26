@@ -19,14 +19,14 @@
 - name: Create symlinks for configuration files
   become: false
   ansible.builtin.file:
-    src: "{{ ansible_facts['user_dir'] }}/dotfiles/files/{{ item.src }}"
+    src: "{{ ansible_facts['user_dir'] }}/dotfiles/roles/dotfiles/files/{{ item.src }}"
     dest: "{{ item.dest }}"
     state: link
     force: yes
     follow: no
   loop:
     - { src: 'starship.toml', dest: '{{ ansible_facts["user_dir"] }}/.config/starship.toml' }
-    - { src: 'zshrc', dest: '{{ ansible_facts["user_dir"] }}/.zshrc' }
+    - { src: '.zshrc', dest: '{{ ansible_facts["user_dir"] }}/.zshrc' }
     - { src: 'aliases.zsh', dest: '{{ ansible_facts["user_dir"] }}/.config/zsh/aliases.zsh' }
     - { src: 'functions.zsh', dest: '{{ ansible_facts["user_dir"] }}/.config/zsh/functions.zsh' }
     - { src: 'fzf.zsh', dest: '{{ ansible_facts["user_dir"] }}/.config/zsh/fzf.zsh' }
