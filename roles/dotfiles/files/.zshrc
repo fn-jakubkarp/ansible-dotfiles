@@ -30,11 +30,12 @@ zstyle ':completion:*' verbose true
 
 export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
 
-if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
-    rm -f "$SSH_AUTH_SOCK"
+ssh-add -l >/dev/null 2>&1
 
-    # Start socat to bridge the Unix socket to Windows npiperelay
-    ( setsid socat UNIX-LISTEN:"$SSH_AUTH_SOCK",fork EXEC:"npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork & ) >/dev/null 2>&1
+if [ $? -eq 2 ]; then
+    killall socat 2>/dev/null
+    rm -f "$SSH_AUTH_SOCK"
+    (setsid socat UNIX-LISTEN:"$SSH_AUTH_SOCK",fork EXEC:"npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork &) >/dev/null 2>&1
 fi
 
 if command -v fzf >/dev/null 2>&1; then eval "$(fzf --zsh)"; fi
