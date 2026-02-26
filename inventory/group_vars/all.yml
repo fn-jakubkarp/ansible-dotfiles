@@ -1,5 +1,5 @@
 home: "{{ ansible_env.HOME }}/.config"
-
+ansible_python_interpreter: auto_silent
 
 default_roles:
 - networking
