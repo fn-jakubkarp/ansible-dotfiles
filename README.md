@@ -6,15 +6,8 @@
 
 ![Ubuntu](https://img.shields.io/badge/Platform-Ubuntu-E95420?style=flat&logo=ubuntu&logoColor=white)
 ![WSL](https://img.shields.io/badge/Compatible-WSL-0078D6?style=flat&logo=windows&logoColor=white)
-![macOS](https://img.shields.io/badge/Coming-Soon-macOS-000000?style=flat&logo=apple&logoColor=white)
+<!-- ![macOS](https://img.shields.io/badge/macOS-000000?style=flat&logo=apple&logoColor=white) -->
 
----
-
-> ⚠️ **Important:** Do not run as root or with `sudo`. The playbook is designed to run as a regular user — running `sudo ./setup.sh` will place dotfiles in `/root` instead of `/home/yourusername`.
->
-> If using WSL, this setup includes SSH agent socket forwarding between Windows and WSL using `socat` and `npiperelay`. The `socat` package is installed automatically, and `npiperelay.exe` must be available in your Windows PATH.
-
----
 
 ## ⚡ What is DevRig?
 
@@ -31,6 +24,12 @@
 
 ---
 
+> ⚠️ **Important:** Do not run as root or with `sudo`. The playbook is designed to run as a regular user — running `sudo ./setup.sh` will place dotfiles in `/root` instead of `/home/yourusername`.
+>
+> If using WSL, this setup includes SSH agent socket forwarding between Windows and WSL using `socat` and `npiperelay`. The `socat` package is installed automatically, and `npiperelay.exe` must be available in your Windows PATH.
+
+
+
 ## 🎯 Features
 
 | Area | Description |
@@ -40,7 +39,6 @@
 | 🔄 **System Updates** | Ensures the system is up-to-date before setup |
 | 🗂️ **Directory Structure** | Creates proper dotfiles management structure |
 
----
 
 ## 🛠️ Tech Stack
 
@@ -59,11 +57,12 @@ git clone git@github.com:fn-jakubkarp/devrig.git
 # Navigate to the project directory
 cd devrig
 
+# Make the setup script executable
+chmod +x setup.sh
+
 # Run the setup script
 ./setup.sh
 ```
-
-> ℹ️ **Prerequisite:** Ensure you have Ansible installed on your system before running the setup.
 
 ---
 
