@@ -29,7 +29,8 @@
   when: starship_check.rc != 0
 
 - name: "Install Starship"
-  ansible.builtin.command: "/tmp/starship_install.sh -y"
+  ansible.builtin.command: "sh /tmp/starship_install.sh -y"
+  become: true
   when: starship_check.rc != 0
 
 - name: Remove Starship install script
