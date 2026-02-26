@@ -1,12 +1,6 @@
 
 alias gbb='git rev-parse --abbrev-ref HEAD'
 
-# Directory aliases
-alias cdd='cd /home/lirin/Dev/'
-alias cdb='cd /home/lirin/Dev/nightly-monorepo/nightlyExtension/apps/extension'
-alias cpbsh='cdb && source /home/lirin/Dev/local_build.sh'
-alias builder='cdb && source /home/lirin/Dev/builder.sh'
-
 # Utility aliases
 alias cls='clear'
 alias reload='source ~/.zshrc'

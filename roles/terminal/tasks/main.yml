@@ -3,9 +3,11 @@
     name: zsh
     state: present
     update_cache: yes
+    cache_valid_time: 3600
   become: true
 
 - name: Install Oh My Zsh
+  become: false
   ansible.builtin.shell: >
     env KEEP_ZSHRC=yes RUNZSH=no CHSH=no UNATTENDED=1
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -38,6 +40,7 @@
   when: starship_check.rc != 0
 
 - name: Install Zoxide
+  become: false
   ansible.builtin.shell: curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
   args:
     creates: "{{ ansible_env.HOME }}/.local/bin/zoxide"

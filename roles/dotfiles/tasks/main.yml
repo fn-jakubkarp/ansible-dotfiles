@@ -1,4 +1,5 @@
 - name: Check default directories for dotfiles
+  become: false
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -8,7 +9,15 @@
     - "{{ ansible_user_dir }}/.config/zsh"
     - "{{ ansible_user_dir }}/.dotfiles"
 
+- name: Template gitconfig
+  become: false
+  ansible.builtin.template:
+    src: gitconfig.j2
+    dest: "{{ ansible_user_dir }}/.gitconfig"
+    mode: '0644'
+
 - name: Create symlinks for configuration files
+  become: false
   ansible.builtin.file:
     src: "{{ ansible_user_dir }}/.dotfiles/files/{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -16,7 +25,6 @@
     force: yes
   loop:
     - { src: 'starship.toml', dest: '{{ ansible_user_dir }}/.config/starship.toml' }
-    - { src: 'gitconfig', dest: '{{ ansible_user_dir }}/.gitconfig' }
     - { src: 'zshrc', dest: '{{ ansible_user_dir }}/.zshrc' }
     - { src: 'aliases.zsh', dest: '{{ ansible_user_dir }}/.config/zsh/aliases.zsh' }
     - { src: 'functions.zsh', dest: '{{ ansible_user_dir }}/.config/zsh/functions.zsh' }

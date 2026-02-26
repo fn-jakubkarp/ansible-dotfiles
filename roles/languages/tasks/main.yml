@@ -1,5 +1,6 @@
 ---
 - name: Install Rustup
+  become: false
   ansible.builtin.shell:
     cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
   args:
@@ -18,9 +19,12 @@
       - python3-pip
       - python3-venv
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
   become: true
 
 - name: Install uv
+  become: false
   ansible.builtin.shell:
     cmd: curl -LsSf https://astral.sh/uv/install.sh | sh
     creates: "{{ ansible_user_dir }}/.local/bin/uv"
