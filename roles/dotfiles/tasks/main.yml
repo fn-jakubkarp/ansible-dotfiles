@@ -10,7 +10,7 @@
 
 - name: Create symlinks for configuration files
   ansible.builtin.file:
-    src: "{{ role_path }}/files/{{ item.src }}"
+    src: "{{ ansible_user_dir }}/.dotfiles/files/{{ item.src }}"
     dest: "{{ item.dest }}"
     state: link
     force: yes
