@@ -1,15 +1,15 @@
 # 🚀 DevRig
 
 <img align="right" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTI4NzE1dmhtcm04c3dlN29iaG4zd2owZHBwczJxbXYwOHVtdGZiaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/aer096d3vD4rYVsgNn/giphy.gif" width="200" height="200" />
-
-**One command to rule them all** — your personal Ubuntu dev environment automation
+<p><i>One command to rule them all - your personal Ubuntu dev environment automation</i></p>
 
 ![Ubuntu](https://img.shields.io/badge/Platform-Ubuntu-E95420?style=flat&logo=ubuntu&logoColor=white)
 ![WSL](https://img.shields.io/badge/Compatible-WSL-0078D6?style=flat&logo=windows&logoColor=white)
-<!-- ![macOS](https://img.shields.io/badge/macOS-000000?style=flat&logo=apple&logoColor=white) -->
 
+&nbsp;
+<hr>
 
-## ⚡ What is DevRig?
+## ⚡ What is it all about?
 
 <img align="right" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTVhb3A2NWNybG11OWlmbWRuYnA5N3g2MzVsMW84N3E5c2NnMm9zZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/H62NM1ab7wzMXURdoi/giphy.gif" width="200" height="200" />
 
@@ -22,13 +22,10 @@
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=0969DA&center=true&vCenter=true&width=435&lines=My+terminal,+my+way;" alt="Typing SVG" />
 </div>
 
----
+<hr>
 
 > ⚠️ **Important:** Do not run as root or with `sudo`. The playbook is designed to run as a regular user — running `sudo ./setup.sh` will place dotfiles in `/root` instead of `/home/yourusername`.
->
 > If using WSL, this setup includes SSH agent socket forwarding between Windows and WSL using `socat` and `npiperelay`. The `socat` package is installed automatically, and `npiperelay.exe` must be available in your Windows PATH.
-
-
 
 ## 🎯 Features
 
@@ -46,7 +43,27 @@
 |----------|-------|
 | **Automation** | ![Ansible](https://img.shields.io/badge/Ansible-808080?style=flat&logo=ansible&logoColor=white) ![Bash](https://img.shields.io/badge/Bash-808080?style=flat&logo=gnu-bash&logoColor=white) |
 
----
+<table>
+  <tr>
+    <th align="left">Category</th>
+    <th align="left">Tools</th>
+  </tr>
+  <tr>
+    <td><b>Automation</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/Ansible-808080?style=for-the-badge&logo=ansible&logoColor=white" />
+      <img src="https://img.shields.io/badge/Bash-808080?style=for-the-badge&logo=gnu-bash&logoColor=white" />
+    </td>
+  </tr>
+  <tr>
+    <td><b>Terminal</b></td>
+    <td>
+      <img src="https://img.shields.io/badge/Neovim-808080?style=for-the-badge&logo=neovim&logoColor=white" />
+      <img src="https://img.shields.io/badge/Tmux-808080?style=for-the-badge&logo=tmux&logoColor=white" />
+      <img src="https://img.shields.io/badge/Oh_My_Zsh-808080?style=for-the-badge&logo=ohmyzsh&logoColor=white" />
+    </td>
+  </tr>
+</table>
 
 ## 🚀 Quick Start
 
@@ -85,17 +102,16 @@ While keeping the scope intentionally limited, I may eventually add:
 - [ ] DevOps tools like Docker and Kubernetes
 - [ ] VSCode configuration and extensions
 
----
+<hr>
 
 ## 🙏 Acknowledgements
 
 Inspired by the fantastic work of:
-
 - [TechDufus](https://github.com/TechDufus)
 - [Dreams Of Autonomy](https://github.com/dreamsofautonomy)
 - [DevOps Toolbox](https://github.com/devopstoolbox)
 
----
+<hr>
 
 <div style="display: flex; justify-content: space-between;">
 
@@ -111,7 +127,6 @@ Inspired by the fantastic work of:
 
 </div>
 
----
 
 <div align="center">
   <p>Made with ❤️ by <a href="https://github.com/fn-jakubkarp">Jakub Karp</a></p>
