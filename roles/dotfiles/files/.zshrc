@@ -28,6 +28,15 @@ zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %
 zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
 
+export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
+
+if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
+    rm -f "$SSH_AUTH_SOCK"
+
+    # Start socat to bridge the Unix socket to Windows npiperelay
+    ( setsid socat UNIX-LISTEN:"$SSH_AUTH_SOCK",fork EXEC:"npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork & ) >/dev/null 2>&1
+fi
+
 if command -v fzf >/dev/null 2>&1; then eval "$(fzf --zsh)"; fi
 if command -v zoxide >/dev/null 2>&1; then eval "$(zoxide init zsh)"; fi
 if command -v starship >/dev/null 2>&1; then eval "$(starship init zsh)"; fi

@@ -56,6 +56,7 @@
       - eza
       - htop
       - tmux
+      - socat # SSH agent socket forwarding Windows<->WSL
     state: present
     update_cache: yes
     cache_valid_time: 3600
