@@ -6,7 +6,12 @@
 ![Ubuntu](https://img.shields.io/badge/Platform-Ubuntu-E95420?style=flat&logo=ubuntu&logoColor=white)
 ![WSL](https://img.shields.io/badge/Compatible-WSL-0078D6?style=flat&logo=windows&logoColor=white)
 
-&nbsp;
+<br>
+<br>
+<br>
+<br>
+<br>
+
 <hr>
 
 ## ⚡ What is it all about?
