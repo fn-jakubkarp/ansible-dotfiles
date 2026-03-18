@@ -10,8 +10,11 @@ local ZSH_CONFIG_DIR="$HOME/.config/zsh"
 
 [[ -f "$ZSH_CONFIG_DIR/history.zsh" ]]    && source "$ZSH_CONFIG_DIR/history.zsh"
 [[ -f "$ZSH_CONFIG_DIR/completion.zsh" ]] && source "$ZSH_CONFIG_DIR/completion.zsh"
+[[ -f "$ZSH_CONFIG_DIR/vars.zsh" ]]       && source "$ZSH_CONFIG_DIR/vars.zsh"
 [[ -f "$ZSH_CONFIG_DIR/aliases.zsh" ]]    && source "$ZSH_CONFIG_DIR/aliases.zsh"
 [[ -f "$ZSH_CONFIG_DIR/functions.zsh" ]]  && source "$ZSH_CONFIG_DIR/functions.zsh"
+[[ -f "$ZSH_CONFIG_DIR/git.zsh" ]]        && source "$ZSH_CONFIG_DIR/git.zsh"
+[[ -f "$ZSH_CONFIG_DIR/fzf.zsh" ]]        && source "$ZSH_CONFIG_DIR/fzf.zsh"
 
 # =============================================================================
 # 3. OTHER SETTINGS
