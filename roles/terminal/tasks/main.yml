@@ -1,8 +1,9 @@
+---
 - name: Install ZSH
   ansible.builtin.apt:
     name: zsh
     state: present
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
   become: true
 
@@ -25,7 +26,7 @@
   ansible.builtin.get_url:
     url: https://starship.rs/install.sh
     dest: /tmp/starship_install.sh
-    mode: '0755'
+    mode: "0755"
   when: starship_check.rc != 0
 
 - name: "Install Starship"

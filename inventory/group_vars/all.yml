@@ -1,3 +1,4 @@
+---
 home: "{{ ansible_env.HOME }}/.config"
 ansible_python_interpreter: auto_silent
 
@@ -7,9 +8,9 @@ user:
   username: "fn-jakubkarp"
 
 default_roles:
-- networking
-- languages
-- terminal
+  - networking
+  - languages
+  - terminal
 
 custom_apt_repositories:
   - name: eza
@@ -17,7 +18,7 @@ custom_apt_repositories:
     key_dest: "/etc/apt/keyrings/gierens.asc"
     repo_line: "deb [signed-by=/etc/apt/keyrings/gierens.asc] http://deb.gierens.de stable main"
     filename: "gierens"
-  
+
 go:
   packages:
     - package: github.com/go-task/task/v3/cmd/task@latest
@@ -26,4 +27,3 @@ go:
       cmd: sesh
     - package: golang.org/x/tools/gopls@latest
       cmd: gopls
-

@@ -3,14 +3,14 @@
   ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
-    mode: '0755'
+    mode: "0755"
   become: true
 
 - name: Download GPG keys for external repositories
   ansible.builtin.get_url:
     url: "{{ item.key_url }}"
     dest: "{{ item.key_dest }}"
-    mode: '0644'
+    mode: "0644"
   loop: "{{ custom_apt_repositories }}"
   when: custom_apt_repositories is defined
   become: true
@@ -20,7 +20,7 @@
     repo: "{{ item.repo_line }}"
     state: present
     filename: "{{ item.filename }}"
-    update_cache: no
+    update_cache: false
   loop: "{{ custom_apt_repositories }}"
   when: custom_apt_repositories is defined
   become: true
@@ -28,7 +28,7 @@
 
 - name: Force apt cache update if new repositories were added
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
   become: true
   when: added_repos.changed
 
@@ -58,6 +58,6 @@
       - tmux
       - socat # SSH agent socket forwarding Windows<->WSL
     state: present
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
   become: true
