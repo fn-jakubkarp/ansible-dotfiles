@@ -2,7 +2,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-set -e
+set -euo pipefail
 
 echo "Checking if Ansible is installed..."
 if ! command -v ansible &> /dev/null; then
