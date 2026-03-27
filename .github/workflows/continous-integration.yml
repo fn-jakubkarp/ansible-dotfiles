@@ -1,0 +1,46 @@
+name: Continuous Integration
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+        - name: Check Ansible Version
+          run: ansible --version
+        - name: Install uv
+          uses: astral-sh/setup-uv@v7
+          with:
+           enable-cache: "auto"
+        - name: Prepare Environment
+          run: |
+            uv tool install yamllint
+        - name: Run Yamllint
+          run: yamllint .
+          continue-on-error: true
+        - name: Run ansible-playbook --syntax-check
+          run: ansible-playbook --syntax-check main.yml
+        - name: Run ansible-lint
+          uses: ansible/ansible-lint@main
+
+        - name: Run Playbook (First Pass)
+          run: ansible-playbook main.yml
+        - name: Run Playbook (Idempotency Check)
+          run: |
+            ansible-playbook main.yml | tee idempotency.log
+            
+            # Check the Play Recap for zero changes or failures
+            if grep -q 'changed=0.*unreachable=0.*failed=0' idempotency.log; then
+              echo "✅ Idempotency test passed! No unexpected changes."
+              exit 0
+            else
+              echo "❌ Idempotency test failed! Tasks reported 'changed' on the second run."
+              exit 1
+            fi
+
+
