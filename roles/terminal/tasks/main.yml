@@ -17,7 +17,7 @@
 
 - name: Check if Starship is already installed
   ansible.builtin.command: "which starship"
-  register: starship_check
+  register: terminal_starship_check
   changed_when: false
   failed_when: false
   check_mode: false
@@ -27,21 +27,30 @@
     url: https://starship.rs/install.sh
     dest: /tmp/starship_install.sh
     mode: "0755"
-  when: starship_check.rc != 0
 
-- name: "Install Starship"
-  ansible.builtin.command: "sh /tmp/starship_install.sh -y"
+- name: Install Starship
+  ansible.builtin.command:
+    cmd: "sh /tmp/starship_install.sh -y"
+    creates: /usr/local/bin/starship
   become: true
-  when: starship_check.rc != 0
 
 - name: Remove Starship install script
   ansible.builtin.file:
     path: /tmp/starship_install.sh
     state: absent
-  when: starship_check.rc != 0
 
-- name: Install Zoxide
-  become: false
-  ansible.builtin.shell: curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+- name: Download Zoxide installer
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh
+    dest: /tmp/install_zoxide.sh
+    mode: "0755"
+
+- name: Run Zoxide installer
+  ansible.builtin.command: /tmp/install_zoxide.sh
   args:
-    creates: "{{ ansible_facts['env']['HOME'] }}/.local/bin/zoxide"
+    creates: "{{ ansible_user_dir }}/.local/bin/zoxide"
+
+- name: Remove Zoxide installer script
+  ansible.builtin.file:
+    path: /tmp/install_zoxide.sh
+    state: absent

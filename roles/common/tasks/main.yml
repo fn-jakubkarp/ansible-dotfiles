@@ -24,13 +24,8 @@
   loop: "{{ custom_apt_repositories }}"
   when: custom_apt_repositories is defined
   become: true
-  register: added_repos
-
-- name: Force apt cache update if new repositories were added
-  ansible.builtin.apt:
-    update_cache: true
-  become: true
-  when: added_repos.changed
+  register: common_added_repos
+  notify: Update apt cache
 
 - name: Install core packages
   ansible.builtin.apt:
