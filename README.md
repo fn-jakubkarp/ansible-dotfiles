@@ -47,15 +47,12 @@ Takes a fresh Ubuntu install and sets up dev environment automatically.
 
 ```bash
 # Clone the repository
-git clone git@github.com:fn-jakubkarp/devrig.git
+git clone git@github.com:fn-jakubkarp/ansible-dotfiles.git
 
-# Navigate to the project directory
-cd devrig
+cd ansible-dotfiles
 
-# Make the setup script executable
 chmod +x setup.sh
 
-# Run the setup script
 ./setup.sh
 ```
 
