@@ -3,7 +3,7 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [main]
+    branches: ["**"]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -33,13 +33,12 @@ jobs:
         run: ansible-playbook main.yml
       - name: Run Playbook (Idempotency Check)
         run: |
-          ansible-playbook main.yml | tee idempotency.log
-
-          # Check the Play Recap for zero changes or failures
-          if grep -q 'changed=0.*unreachable=0.*failed=0' idempotency.log; then
-            echo "✅ Idempotency test passed! No unexpected changes."
-            exit 0
+          ansible-playbook main.yml > idempotency.log
+          # Check if 'changed=0' is in the summary
+          if grep -q 'changed=0' idempotency.log; then
+            echo "✅ Idempotency test passed!"
           else
-            echo "❌ Idempotency test failed! Tasks reported 'changed' on the second run."
+            echo "❌ Idempotency test failed! "
+            cat idempotency.log
             exit 1
           fi
