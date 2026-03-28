@@ -18,25 +18,31 @@
 - name: Check if Starship is installed
   ansible.builtin.stat:
     path: /usr/local/bin/starship
-  register: starship_bin
+  register: terminal_starship_bin
+
+- name: Check if Starship is installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/starship
+  register: terminal_starship_bin
 
 - name: Install Starship
+  when: not terminal_starship_bin.stat.exists
   block:
     - name: Download Starship install script
       ansible.builtin.get_url:
         url: https://starship.rs/install.sh
         dest: /tmp/starship_install.sh
-        mode: '0755'
+        mode: "0755"
 
     - name: Run Starship installer
-      ansible.builtin.shell: /tmp/starship_install.sh --yes
+      ansible.builtin.command: /tmp/starship_install.sh --yes
       become: true
+      changed_when: true
 
     - name: Remove Starship install script
       ansible.builtin.file:
         path: /tmp/starship_install.sh
         state: absent
-  when: not starship_bin.stat.exists
 
 - name: Download Zoxide installer
   ansible.builtin.get_url:
