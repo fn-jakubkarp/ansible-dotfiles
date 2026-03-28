@@ -34,7 +34,6 @@ jobs:
       - name: Run Playbook (Idempotency Check)
         run: |
           ansible-playbook main.yml > idempotency.log
-          # Check if 'changed=0' is in the summary
           if grep -q 'changed=0' idempotency.log; then
             echo "✅ Idempotency test passed!"
           else
