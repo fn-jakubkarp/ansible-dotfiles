@@ -1,8 +1,15 @@
 ---
+- name: Download Rustup installer
+  become: false
+  ansible.builtin.get_url:
+    url: https://sh.rustup.rs
+    dest: /tmp/rustup-init.sh
+    mode: "0755"
+
 - name: Install Rustup
   become: false
-  ansible.builtin.shell:
-    cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+  ansible.builtin.command:
+    cmd: /tmp/rustup-init.sh -y --no-modify-path
   args:
     creates: "{{ ansible_facts['user_dir'] }}/.cargo/bin/rustup"
 
@@ -11,6 +18,7 @@
     path: "{{ ansible_facts['user_dir'] }}/.local_paths"
     line: 'source "$HOME/.cargo/env"'
     create: true
+    mode: "0644"
 
 - name: Install Python packages
   ansible.builtin.apt:
@@ -19,19 +27,28 @@
       - python3-pip
       - python3-venv
     state: present
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
   become: true
 
+- name: Download uv installer
+  become: false
+  ansible.builtin.get_url:
+    url: https://astral.sh/uv/install.sh
+    dest: /tmp/uv_install.sh
+    mode: "0755"
+
 - name: Install uv
   become: false
-  ansible.builtin.shell:
-    cmd: curl -LsSf https://astral.sh/uv/install.sh | sh
+  ansible.builtin.command:
+    cmd: /tmp/uv_install.sh
+  args:
     creates: "{{ ansible_facts['user_dir'] }}/.local/bin/uv"
-  register: uv_install
+  register: languages_uv_install
 
 - name: Add uv to PATH
   ansible.builtin.lineinfile:
     path: "{{ ansible_facts['user_dir'] }}/.local_paths"
     line: 'export PATH="$HOME/.local/bin:$PATH"'
     create: true
+    mode: "0644"

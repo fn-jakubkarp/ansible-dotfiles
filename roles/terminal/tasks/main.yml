@@ -1,8 +1,9 @@
+---
 - name: Install ZSH
   ansible.builtin.apt:
     name: zsh
     state: present
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
   become: true
 
@@ -14,33 +15,51 @@
   args:
     creates: "{{ ansible_facts['env']['HOME'] }}/.oh-my-zsh"
 
-- name: Check if Starship is already installed
-  ansible.builtin.command: "which starship"
-  register: starship_check
-  changed_when: false
-  failed_when: false
-  check_mode: false
+- name: Check if Starship is installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/starship
+  register: terminal_starship_bin
 
-- name: Download Starship install script
-  ansible.builtin.get_url:
-    url: https://starship.rs/install.sh
-    dest: /tmp/starship_install.sh
-    mode: '0755'
-  when: starship_check.rc != 0
+- name: Install Starship
+  when: not terminal_starship_bin.stat.exists
+  block:
+    - name: Download Starship install script
+      ansible.builtin.get_url:
+        url: https://starship.rs/install.sh
+        dest: /tmp/starship_install.sh
+        mode: "0755"
 
-- name: "Install Starship"
-  ansible.builtin.command: "sh /tmp/starship_install.sh -y"
-  become: true
-  when: starship_check.rc != 0
+    - name: Run Starship installer
+      ansible.builtin.command: /tmp/starship_install.sh --yes
+      become: true
+      changed_when: true
 
-- name: Remove Starship install script
-  ansible.builtin.file:
-    path: /tmp/starship_install.sh
-    state: absent
-  when: starship_check.rc != 0
+    - name: Remove Starship install script
+      ansible.builtin.file:
+        path: /tmp/starship_install.sh
+        state: absent
+
+- name: Check if Zoxide is installed
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.local/bin/zoxide"
+  register: terminal_zoxide_bin
 
 - name: Install Zoxide
-  become: false
-  ansible.builtin.shell: curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-  args:
-    creates: "{{ ansible_facts['env']['HOME'] }}/.local/bin/zoxide"
+  when: not terminal_zoxide_bin.stat.exists
+  block:
+    - name: Download Zoxide installer
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh
+        dest: /tmp/install_zoxide.sh
+        mode: "0755"
+    - name: Run Zoxide installer
+      ansible.builtin.command: /tmp/install_zoxide.sh
+      args:
+        creates: "{{ ansible_user_dir }}/.local/bin/zoxide"
+      register: terminal_zoxide_result
+      changed_when: "'Installing' in terminal_zoxide_result.stdout or terminal_zoxide_result.rc == 0"
+
+    - name: Remove Zoxide installer script
+      ansible.builtin.file:
+        path: /tmp/install_zoxide.sh
+        state: absent
