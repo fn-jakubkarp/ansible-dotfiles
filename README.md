@@ -1,4 +1,4 @@
-# DevRig
+# Ansible Dotfiles
 
 *Ansible-based Ubuntu dev environment setup. One command, fresh install to fully configured.*
 
