@@ -20,11 +20,6 @@
     path: /usr/local/bin/starship
   register: terminal_starship_bin
 
-- name: Check if Starship is installed
-  ansible.builtin.stat:
-    path: /usr/local/bin/starship
-  register: terminal_starship_bin
-
 - name: Install Starship
   when: not terminal_starship_bin.stat.exists
   block:
@@ -57,13 +52,12 @@
         url: https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh
         dest: /tmp/install_zoxide.sh
         mode: "0755"
-
     - name: Run Zoxide installer
       ansible.builtin.command: /tmp/install_zoxide.sh
       args:
         creates: "{{ ansible_user_dir }}/.local/bin/zoxide"
       register: terminal_zoxide_result
-      changed_when: "'Installing' in terminal_zoxide_result.stdout or zoxide_result.rc == 0"
+      changed_when: "'Installing' in terminal_zoxide_result.stdout or terminal_zoxide_result.rc == 0"
 
     - name: Remove Zoxide installer script
       ansible.builtin.file:
