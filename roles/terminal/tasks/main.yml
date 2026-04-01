@@ -7,6 +7,34 @@
     cache_valid_time: 3600
   become: true
 
+- name: Install fd-find
+  ansible.builtin.apt:
+    name: fd-find
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+
+- name: Clone fzf from GitHub
+  ansible.builtin.git:
+    repo: https://github.com/junegunn/fzf.git
+    dest: "{{ ansible_user_dir }}/.fzf"
+    depth: 1
+    single_branch: true
+    version: master
+
+- name: Run fzf install script (download binary; non-interactive)
+  ansible.builtin.command: "{{ ansible_user_dir }}/.fzf/install --bin"
+  args:
+    creates: "{{ ansible_user_dir }}/.fzf/bin/fzf"
+
+- name: Add fzf to .local_paths
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_user_dir }}/.local_paths"
+    line: 'export PATH="$HOME/.fzf/bin:$PATH"'
+    create: true
+    mode: "0644"
+
 - name: Install Oh My Zsh
   become: false
   ansible.builtin.shell: >
