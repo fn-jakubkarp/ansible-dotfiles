@@ -5,6 +5,7 @@ alias gbb='git rev-parse --abbrev-ref HEAD'
 alias cls='clear'
 alias reload='source ~/.zshrc'
 alias codezsh='code ~/.zshrc'
+alias cdd='cd ~/Dev'
 
 # Aliases for installed packages
 alias ls='eza --classify=always'
