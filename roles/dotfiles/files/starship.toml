@@ -278,3 +278,10 @@ format = '\[[$symbol($version)]($style)\]'
 
 [zig]
 format = '\[[$symbol($version)]($style)\]'
+
+[line_break]
+disabled = true
+
+[character]
+success_symbol = " [❯](bold green) "
+error_symbol = " [❯](bold red) "
