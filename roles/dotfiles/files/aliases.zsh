@@ -14,3 +14,4 @@ alias ll='eza -l'
 alias lla='eza -l -a'
 alias cat='batcat'
 alias fd='fdfind'  # Use fd command (installed as fdfind)
+alias ms='multipass'
